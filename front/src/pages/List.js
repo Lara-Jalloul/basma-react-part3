@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from '../components/Navbar/Navbar';
-import TableList from '../components/TableList';
+import TableList from '../components/TableList/TableList';
 
 function List() {
     return (

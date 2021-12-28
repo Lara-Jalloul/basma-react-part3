@@ -1,44 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import "./Table.css";
+import {
+  Find,
+  FilterContainer,
+  FilterText,
+  Filter,
+  Select,
+  Option,
+  FilterSearch,
+  Caption,
+} from "./TableListElement";
 import axios from "axios";
 import FadeLoader from "react-spinners/FadeLoader";
 import ReactPaginate from "react-paginate";
-import styled from "styled-components";
-
-const FilterContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-`;
-
-const Filter = styled.div`
-  // margin: 5px;
-`;
-
-const FilterText = styled.span`
-  font-size: 20px;
-  font-weight: 600;
-  margin-right: 20px;
-`;
-
-const Select = styled.select`
-  padding: 10px;
-  margin-right: 20px;
-`;
-const Option = styled.option``;
-const FilterSearch = styled.div``;
-const Find = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 20px;
-`;
-
-const Caption = styled.caption`
-  font-size: 1.5em;
-  margin: 0.9em 0 0.9em;
-  color: black;
-`;
+import SessionContext from "../../context/SessionContext";
 
 function TableList() {
+  const {
+    session: {
+      user: { access_token },
+    },
+  } = useContext(SessionContext);
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState("");
@@ -61,22 +44,25 @@ function TableList() {
     let result = await axios.get(
       `http://localhost:8000/api/admins/filter?nb=${pagination}`,
       {
-        "Content-Type": "application/json",
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       }
     );
+
     setUsers(result.data.users.data);
     setLoading(false);
   };
-
-  const filterUsers = users.filter((user) => {
-    return user.first_name.toLowerCase().includes(search.toLowerCase());
-  });
 
   useEffect(() => {
     getData();
   }, [pagination]);
 
-  // const pageCount = Math.ceil(users.length / pagination);
+  const filterUsers = users.filter((user) => {
+    return user.first_name.toLowerCase().includes(search.toLowerCase());
+  });
 
   return (
     <div>
@@ -91,15 +77,16 @@ function TableList() {
               <Option value={60}>60</Option>
             </Select>
           </Filter>
-        </FilterContainer>{" "}
-        <FilterSearch>
-          <input
-            className="nosubmit"
-            type="search"
-            placeholder="Search..."
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </FilterSearch>
+
+          <FilterSearch>
+            <input
+              className="nosubmit"
+              type="search"
+              placeholder="Search..."
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </FilterSearch>
+        </FilterContainer>
       </Find>
       <table>
         <Caption>List of Registered Users</Caption>
@@ -143,6 +130,7 @@ function TableList() {
       <ReactPaginate
         previousLabel={"Previous"}
         nextLabel={"Next"}
+        // pageCount={}
         // pageCount={pageCount}
         // onPageChange={}
         containerClassName={"paginationBttns"}

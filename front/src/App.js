@@ -1,20 +1,16 @@
 import "./App.css";
-import Routers from "./components/Routers";
+import Routes from "./components/Routes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { BrowserRouter } from "react-router-dom";
-import Navbar from './components/Navbar/Navbar';
+import { withRouter } from "react-router-dom";
 
 function App() {
   return (
     <>
-      {/* <Navbar /> */}
-      <BrowserRouter>
-        <Routers />
-      </BrowserRouter>
+      <Routes />
       <ToastContainer />
     </>
   );
 }
 
-export default App;
+export default withRouter(App);
