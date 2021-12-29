@@ -21,11 +21,16 @@ function TableList() {
       user: { access_token },
     },
   } = useContext(SessionContext);
+  
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState("");
   const [search, setSearch] = useState("");
+  const [pageNumber, setPageNumber] = useState(0);
+
+  const usersPerPage = 20;
+  const pagesVisited = pageNumber * usersPerPage;
 
   const onChange = (e) => {
     if (e.target.value === "----") {
@@ -59,6 +64,14 @@ function TableList() {
   useEffect(() => {
     getData();
   }, [pagination]);
+
+
+  const pageCount = Math.ceil(users.length / usersPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+  
 
   const filterUsers = users.filter((user) => {
     return user.first_name.toLowerCase().includes(search.toLowerCase());
@@ -115,7 +128,7 @@ function TableList() {
         ) : (
           <tbody>
             {filterUsers &&
-              filterUsers.map((user) => {
+              filterUsers.slice(pagesVisited, pagesVisited + usersPerPage).map((user) => {
                 return (
                   <tr key={user.id}>
                     <td data-label="First_Name">{user.first_name}</td>
@@ -130,9 +143,8 @@ function TableList() {
       <ReactPaginate
         previousLabel={"Previous"}
         nextLabel={"Next"}
-        // pageCount={}
-        // pageCount={pageCount}
-        // onPageChange={}
+        pageCount={pageCount}
+        onPageChange={changePage}
         containerClassName={"paginationBttns"}
         previousLinkClassName={"previousBttn"}
         nextLinkClassName={"nextBttn"}

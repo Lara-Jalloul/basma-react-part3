@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Nav = styled.nav`
   background: white;
   box-shadow: 0px 0px 10px gray;
-  height: 50px;
+  height: 60px;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -12,7 +12,6 @@ export const Nav = styled.nav`
 `;
 
 export const Logo = styled.img`
-  //   padding-left: 10px;
   height: 30px;
   width: 150px;
 `;
@@ -30,11 +29,8 @@ export const NavLink = styled(Link)`
   text-decoration: none;
   padding: 0 1rem;
   cursor: pointer;
-  // &.active {
-  //   color: #dc143c;
-  // }
-  &:hover{
-    color:#dc143c;
+  &:hover {
+    color: #dc143c;
   }
 `;
 
@@ -48,12 +44,7 @@ export const NavBtn = styled.nav`
   display: flex;
   align-items: center;
   margin-right: 24px;
-  // @media screen and (max-width: 768px) {
-  //   display: none;
-  // }
-  // @media screen and (min-width: 600px) {
-  //   flex:no-wrap;
-  //  }
+  padding:15px;
 `;
 
 export const NavBtnLink = styled.div`
@@ -66,7 +57,6 @@ export const NavBtnLink = styled.div`
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   text-decoration: none;
-  /* Second Nav */
   margin-left: 24px;
   &:hover {
     transition: all 0.2s ease-in-out;

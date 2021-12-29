@@ -67,7 +67,7 @@ function Graph() {
     <>
       <Navbar />
       <div className="App">
-        <h1>Count of Users and Average Registration</h1>
+        <h1 style={{marginTop:"30px"}}>Count of Users and Average Registration</h1>
         <FilterContainer>
           <Filter>
             <FilterText>Filter:</FilterText>
