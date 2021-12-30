@@ -12,7 +12,9 @@ import {
 } from "./TableListElement";
 import axios from "axios";
 import FadeLoader from "react-spinners/FadeLoader";
-import ReactPaginate from "react-paginate";
+import "bootstrap/dist/css/bootstrap.min.css";
+// import ReactPaginate from "react-paginate";
+import Pagination from "react-js-pagination";
 import SessionContext from "../../context/SessionContext";
 
 function TableList() {
@@ -21,16 +23,18 @@ function TableList() {
       user: { access_token },
     },
   } = useContext(SessionContext);
-  
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState("");
   const [search, setSearch] = useState("");
-  const [pageNumber, setPageNumber] = useState(0);
+  const [current_page, setCurrent] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [per_page, setPerPage] = useState(0);
+  // const [pageNumber, setPageNumber] = useState(0);
 
-  const usersPerPage = 20;
-  const pagesVisited = pageNumber * usersPerPage;
+  // const usersPerPage = 20;
+  // const pagesVisited = pageNumber * usersPerPage;
 
   const onChange = (e) => {
     if (e.target.value === "----") {
@@ -45,9 +49,9 @@ function TableList() {
     console.log(e.target.value);
   };
 
-  const getData = async () => {
+  const getData = async (page = 1) => {
     let result = await axios.get(
-      `http://localhost:8000/api/admins/filter?nb=${pagination}`,
+      `http://localhost:8000/api/admins/filter?nb=${pagination}&&page=${page}`,
       {
         headers: {
           Authorization: `Bearer ${access_token}`,
@@ -56,8 +60,12 @@ function TableList() {
         },
       }
     );
+    console.log("res", result);
 
     setUsers(result.data.users.data);
+    setCurrent(result.data.users.current_page);
+    setTotal(result.data.users.total);
+    setPerPage(result.data.users.per_page);
     setLoading(false);
   };
 
@@ -65,13 +73,11 @@ function TableList() {
     getData();
   }, [pagination]);
 
+  // const pageCount = Math.ceil(users.length / usersPerPage);
 
-  const pageCount = Math.ceil(users.length / usersPerPage);
-
-  const changePage = ({ selected }) => {
-    setPageNumber(selected);
-  };
-  
+  // const changePage = ({ selected }) => {
+  //   setPageNumber(selected);
+  // };
 
   const filterUsers = users.filter((user) => {
     return user.first_name.toLowerCase().includes(search.toLowerCase());
@@ -101,8 +107,8 @@ function TableList() {
           </FilterSearch>
         </FilterContainer>
       </Find>
+      <Caption>List of Registered Users</Caption>
       <table>
-        <Caption>List of Registered Users</Caption>
         <thead>
           <tr>
             <th>First_name</th>
@@ -128,7 +134,7 @@ function TableList() {
         ) : (
           <tbody>
             {filterUsers &&
-              filterUsers.slice(pagesVisited, pagesVisited + usersPerPage).map((user) => {
+              filterUsers.map((user) => {
                 return (
                   <tr key={user.id}>
                     <td data-label="First_Name">{user.first_name}</td>
@@ -140,17 +146,18 @@ function TableList() {
           </tbody>
         )}
       </table>
-      <ReactPaginate
-        previousLabel={"Previous"}
-        nextLabel={"Next"}
-        pageCount={pageCount}
-        onPageChange={changePage}
-        containerClassName={"paginationBttns"}
-        previousLinkClassName={"previousBttn"}
-        nextLinkClassName={"nextBttn"}
-        disabledClassName={"paginationDisabled"}
-        activeClassName={"paginationActive"}
-      />
+      <div className="mt-3 pagina">
+        <Pagination
+          activePage={current_page}
+          totalItemsCount={total}
+          itemsCountPerPage={per_page}
+          onChange={(pagination) => getData(pagination)}
+          itemClass="page-item"
+          linkClass="page-link"
+          firstPageText="First"
+          lastPageText="Last"
+        />
+      </div>
     </div>
   );
 }

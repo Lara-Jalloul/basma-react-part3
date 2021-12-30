@@ -30,4 +30,6 @@ export const Caption = styled.caption`
   font-size: 1.5em;
   margin: 0.9em 0 0.9em;
   color: black;
+  width:100vw;
+  text-align:center;
 `;
