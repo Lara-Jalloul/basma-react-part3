@@ -1,6 +1,6 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import { Bar, Pie, Doughnut } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import SessionContext from "../context/SessionContext";
 import axios from "axios";
 import styled from "styled-components";
@@ -92,68 +92,6 @@ function Graph() {
             }}
           />
         )}
-        {/* <Bar
-          data={{
-            labels: [
-              "last_month",
-              "last_3months",
-              "last_week",
-              "last_24Hours",
-              "last_year",
-            ],
-            datasets: [
-              {
-                label: "Nb. of Users",
-                data: [100, 200, 300, 400, 500, 600],
-                backgroundColor: "red",
-                barThickness: 12,
-              },
-              {
-                label: "Average",
-                data: [100, 500, 300, 343, 43, 343],
-                backgroundColor: "rgba(9, 5, 72, 0.6)",
-                barThickness: 12,
-              },
-            ],
-          }}
-          options={{
-            scales: {
-              xAxes: [
-                {
-                  gridLines: {
-                    color: "cyan",
-                  },
-                  scaleLabel: {
-                    labelString: "Months",
-                    display: true,
-                    fontColor: "blue",
-                    fontSize: 20,
-                  },
-                  ticks: {
-                    fontColor: "green",
-                  },
-                },
-              ],
-              yAxes: [
-                {
-                  gridLines: {
-                    color: "cyan",
-                  },
-                  scaleLabel: {
-                    labelString: "Revenue",
-                    display: true,
-                    fontColor: "blue",
-                    fontSize: 20,
-                  },
-                  ticks: {
-                    beginAtZero: true,
-                    fontColor: "green",
-                  },
-                },
-              ],
-            },
-          }}
-        ></Bar> */}
       </div>
     </>
   );
